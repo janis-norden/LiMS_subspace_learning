@@ -983,29 +983,38 @@ def plot_projected_densities_4b_relevance_profile(
     num_examples = len(labels)
     density_estimates = data_box_projected_1.get_density_estimates()
     class_flag = np.zeros(len(class_labels))
-    for n in range(num_examples):
 
-        # plot Gaussian mixture
-        num_comps = len(density_estimates[n]['mix_weights'])
-        f = np.zeros(plot_opts['x_d1'].shape)
-        for k in range(num_comps):
+    # loop over classes
+    for c in range(3):
 
-            # evaluate Gaussian on x
-            mu = density_estimates[n]['mu_array'][:, k]
-            Sigma = density_estimates[n]['Sigma_array'][k, :, :]
-            weight = density_estimates[n]['mix_weights'][k]
-            y = multivariate_normal.pdf(plot_opts['x_d1'], mu, Sigma)
+        # find examples in class c
+        ids_c = np.where(labels == c)[0]
 
-            # accumulate from different components
-            f += weight * y
+        # initialize array to hold class-conditional
+        f = np.zeros(len(plot_opts['x_d1']))
+
+        # loop over examples in class c
+        for n in ids_c:
+            
+            # loop over components of current example
+            num_comps = len(density_estimates[n]['mix_weights'])
+            for k in range(num_comps):
+
+                # evaluate Gaussian on x
+                mu = density_estimates[n]['mu_array'][:, k]
+                Sigma = density_estimates[n]['Sigma_array'][k, :, :]
+                weight = density_estimates[n]['mix_weights'][k]
+                y = multivariate_normal.pdf(plot_opts['x_d1'], mu, Sigma)
+
+                # accumulate from different components
+                f += weight * y
         
+        # normalize over number of examples in class c
+        f /= len(ids_c)
+
         # plot Gaussian mixture in the class colour
-        if class_flag[labels[n]] == 0:
-            axs[2].plot(plot_opts['x_d1'], f, color=class_colours[labels[n]], label=class_labels[labels[n]], alpha=plot_opts['alpha'], linewidth=linewidth)
-            class_flag[labels[n]] = 1
-        else:
-            axs[2].plot(plot_opts['x_d1'], f, color=class_colours[labels[n]], alpha=plot_opts['alpha'], linewidth=linewidth)
-    
+        axs[2].plot(plot_opts['x_d1'], f, color=class_colours[c], label=class_labels[c], alpha=plot_opts['alpha'], linewidth=linewidth)
+        
     axs[2].set(
         xlabel = r'$\tilde{v}_{1} \cdot [m_{1}, m_{2}, \chi_{1}, \chi_{2}]$',
         ylabel = 'density'
@@ -1036,48 +1045,42 @@ def plot_projected_densities_4b_relevance_profile(
     X, Y = np.meshgrid(plot_opts['x_d2'], plot_opts['y_d2'])
     pos = np.dstack((X, Y))
 
-    # initalize class conditional arrays
-    Z_C0 = np.zeros(X.shape)
-    Z_C1 = np.zeros(X.shape)
-    Z_C2 = np.zeros(X.shape)
+    # loop over classes
+    for c in range(3):
 
-    class_flag = np.zeros(len(class_labels))
-    for n in range(num_examples):
+        # find examples in class c
+        ids_c = np.where(labels == c)[0]
 
-        # plot Gaussian mixture
-        num_comps = len(density_estimates[n]['mix_weights'])
+        # initialize array to hold class-conditional
         Z = np.zeros(X.shape)
-        for k in range(num_comps):
 
-            # evaluate Gaussian on x
-            mu = density_estimates[n]['mu_array'][:, k]
-            Sigma = density_estimates[n]['Sigma_array'][k, :, :]
-            weight = density_estimates[n]['mix_weights'][k]
-            Z_add = multivariate_normal.pdf(pos, mu, Sigma)
+        # loop over examples in class c
+        for n in ids_c:
+            
+            # loop over components of current example
+            num_comps = len(density_estimates[n]['mix_weights'])
+            for k in range(num_comps):
 
-            # accumulate from different components
-            Z += weight * Z_add
+                # evaluate Gaussian on x
+                mu = density_estimates[n]['mu_array'][:, k]
+                Sigma = density_estimates[n]['Sigma_array'][k, :, :]
+                weight = density_estimates[n]['mix_weights'][k]
+                Z_add = multivariate_normal.pdf(pos, mu, Sigma)
 
-        # add Z to class conditional arrays
-        if labels[n] == 0:
-            Z_C0 += Z
-        elif labels[n] == 1:
-            Z_C1 += Z
-        else:
-            Z_C2 += Z
+                # accumulate from different components
+                Z += weight * Z_add
+        
+        # normalize over number of examples in class c
+        Z /= len(ids_c)
 
         # find maximum density value
         vmax = np.max(Z)
         vmin = np.min(Z)
-        levels = np.linspace(0.1 * vmax, vmax, num=10)
+        levels = np.linspace(0.01 * vmax, vmax, num=10)
 
         # plot Gaussian mixture in the class colour
-        if class_flag[labels[n]] == 0:
-            axs[3].contour(X, Y, Z, levels=levels, colors=class_colours[labels[n]], linewidths=linewidth)
-            class_flag[labels[n]] = 1
-        else:
-            axs[3].contour(X, Y, Z, levels=levels, colors=class_colours[labels[n]], alpha = plot_opts['alpha'], linewidths=linewidth)
-    
+        axs[3].contour(X, Y, Z, levels=levels, colors=class_colours[c], alpha = plot_opts['alpha'], linewidths=linewidth)
+
     # add invisible plots for labels
     axs[3].plot(-plot_opts['x_d1'], -plot_opts['x_d1'], color=class_colours[0], alpha = plot_opts['alpha'], label='BNS/NSBH', linewidth=linewidth)
     axs[3].plot(-plot_opts['x_d1'], -plot_opts['x_d1'], color=class_colours[1], alpha = plot_opts['alpha'], label='Small BBH', linewidth=linewidth)
