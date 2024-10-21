@@ -835,7 +835,7 @@ def create_data_frame_exp4b(exp4b_data, winner_takes_all = True):
 
     return pd.DataFrame(df)
 
-def plot_projected_densities_b_paper_relevance_profile(
+def plot_projected_densities_4b_relevance_profile(
         filename, 
         winner_takes_all = True, 
         avg_type = 'macro', 
