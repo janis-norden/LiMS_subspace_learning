@@ -1339,7 +1339,7 @@ def run_exp6_pred_GMLVQ_inits(exp6_opts):
         pht_predictions_train_GMLVQ = classifier.eval_pht_classifier(data_box_train_norm, data_box_train_norm, class_prior, V_GMLVQ)
         pht_predictions_test_GMLVQ = classifier.eval_pht_classifier(data_box_train_norm, data_box_test_norm, class_prior, V_GMLVQ)
 
-        # evaluate PHT predictions on subspace learned by via our method
+        # evaluate PHT predictions on subspace learned via our method
         pht_predictions_train = classifier.eval_pht_classifier(data_box_train_norm, data_box_train_norm, class_prior, subspace_learned['V_opt'])
         pht_predictions_test = classifier.eval_pht_classifier(data_box_train_norm, data_box_test_norm, class_prior, subspace_learned['V_opt'])
 
