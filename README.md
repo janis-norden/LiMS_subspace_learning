@@ -1,5 +1,5 @@
 # General Description
-This code library contains the experimental code which was used to produce the results presented in the manuscript "Discriminative subspace learning for model- and data-driven discovery" by J. Norden et al.
+This code library contains the experimental code which was used to produce the results presented in the manuscript "Discriminative subspace learning for model- and data-driven discovery".
 
 ---
 
