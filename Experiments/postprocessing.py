@@ -439,7 +439,7 @@ def plot_accuracy_time_exp2_opt_types(
     # Plot
     # create grouped boxplot
     column_width = general_styles['column_width']
-    fig, ax1 = plt.subplots(figsize=(column_width, 0.6 * column_width))
+    fig, ax1 = plt.subplots(figsize=(2 * column_width, (2 * column_width) / 4))
     
     # Boxplot for accuracy
     box_acc = sns.boxplot(
@@ -485,7 +485,7 @@ def plot_accuracy_time_exp2_opt_types(
 
     # Adjust legend entries
     handles1, previous_labels = ax1.get_legend_handles_labels()
-    ax1.legend(loc=(0.64, 0.2), handles=handles1, labels=['a) acc. - batch', 'b) acc. - iterative'], fontsize=legend_fontsize)
+    ax1.legend(loc='right', handles=handles1, labels=['a) acc. - batch', 'b) acc. - iterative'], fontsize=legend_fontsize)
 
     handles2, previous_labels = ax2.get_legend_handles_labels()
     ax2.legend(loc='lower right', handles=handles2, labels=['c) time - batch', 'd) time - iterative'], fontsize=legend_fontsize)
@@ -664,8 +664,7 @@ def boxplot_accuracy_loglikelihood_exp4b(
 
     # Plot
     column_width = general_styles['column_width']
-    #fig, ax = plt.subplots(figsize=(2 * column_width, (2 * column_width) / 4))
-    fig, ax1 = plt.subplots(figsize=(column_width, 0.6 * column_width))
+    fig, ax1 = plt.subplots(figsize=(2 * column_width, (2 * column_width) / 4))
 
     ax1 = sns.boxplot(
         x = df_long['dimension'], 
@@ -687,7 +686,7 @@ def boxplot_accuracy_loglikelihood_exp4b(
     ax1.yaxis.label.set_size(axis_label_fontsize)
     ax1.tick_params(axis='both', which='major', labelsize=tick_fontsize)
     handles1, previous_labels = ax1.get_legend_handles_labels()
-    ax1.legend(loc=(0.45, 0.019), 
+    ax1.legend(loc=(0.75, 0.019), 
                 handles=handles1, 
                 labels=['train acc.', 'test acc.'], 
                 fontsize=legend_fontsize)
@@ -1111,7 +1110,9 @@ def plot_optimization_history_averages(
     axis_label_fontsize=12, 
     tick_fontsize=10, 
     legend_fontsize=10, 
-    line_width=2
+    line_width=2,
+    xlim = [0, 10],
+    ylim_acc = [0.5, 1]
 ):
 
     # load experiment outcomes from file
@@ -1199,7 +1200,7 @@ def plot_optimization_history_averages(
     # load general styles
     general_styles = load_general_styles()
     column_width = general_styles['column_width']
-    fig, axs = plt.subplots(2, 2, figsize=(column_width, 0.6 * column_width))
+    fig, axs = plt.subplots(2, 2, figsize=(2 * column_width, (2 * column_width) / 4))
 
     # loglikelihood
     loglikelihood_values = -loglikelihood_values
@@ -1245,21 +1246,25 @@ def plot_optimization_history_averages(
             axs[i, j].tick_params(axis='both', labelsize=tick_fontsize)
 
     # set axis configs
+    axs[0, 0].set_xlim(xlim)
     axs[0, 0].set_xlabel('iteration', fontsize=axis_label_fontsize)
     axs[0, 0].set_ylabel('log-likelihood', fontsize=axis_label_fontsize)
     
+    axs[0, 1].set_xlim(xlim)
     axs[0, 1].set_xlabel('iteration', fontsize=axis_label_fontsize)
-    axs[0, 1].set_ylabel('normals angle', fontsize=axis_label_fontsize)
+    axs[0, 1].set_ylabel('angle', fontsize=axis_label_fontsize)
     axs[0, 1].set_ylim([0, np.pi / 2])
     axs[0, 1].set_yticks([0, np.pi / 4, np.pi / 2])
     axs[0, 1].set_yticklabels(['0', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$'])
 
-    axs[1, 0].set_ylim([0.7, 1])
+    axs[1, 0].set_xlim(xlim)
+    axs[1, 0].set_ylim(ylim_acc)
     axs[1, 0].set_yticks([0.7, 0.8, 0.9, 1])
     axs[1, 0].set_xlabel('iteration', fontsize=axis_label_fontsize)
     axs[1, 0].set_ylabel('train acc.', fontsize=axis_label_fontsize)
 
-    axs[1, 1].set_ylim([0.7, 1])
+    axs[1, 1].set_xlim(xlim)
+    axs[1, 1].set_ylim(ylim_acc)
     axs[1, 1].set_yticks([0.7, 0.8, 0.9, 1])
     axs[1, 1].set_xlabel('iteration', fontsize=axis_label_fontsize)
     axs[1, 1].set_ylabel('test acc.', fontsize=axis_label_fontsize)
@@ -1350,7 +1355,7 @@ def plot_GMLVQ_SSL_comparisson(
     # load plot styles and extract
     general_styles = load_general_styles()
     column_width = general_styles['column_width']
-    fig, axis = plt.subplots(figsize=(column_width, 0.6 * column_width))
+    fig, axis = plt.subplots(figsize=(2 * column_width, (2 * column_width) / 4))
     ax = sns.boxplot(
                 data = df,
                 x = 'method',
