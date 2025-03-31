@@ -1200,7 +1200,7 @@ def plot_optimization_history_averages(
     # load general styles
     general_styles = load_general_styles()
     column_width = general_styles['column_width']
-    fig, axs = plt.subplots(2, 2, figsize=(2 * column_width, (2 * column_width) / 4))
+    fig, axs = plt.subplots(2, 2, figsize=(2 * column_width, (2 * column_width) / 3))
 
     # loglikelihood
     loglikelihood_values = -loglikelihood_values
