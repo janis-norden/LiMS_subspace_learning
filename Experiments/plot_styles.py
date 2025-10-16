@@ -12,8 +12,8 @@ def load_general_styles():
     general_styles = {
     'palette_box_plot': 'colorblind',   
     'palette_light': ['#7BC1E8', '#E69B63'],        # pallete for seaborn box plots
-    'palette_dark': 'dark',                          # pallete for seaborn box plots
-    'column_width': 8.89,                            # column width in cm for TNNLS 
+    'palette_dark': 'dark',                             # pallete for seaborn box plots
+    'column_width': 17.4,                               # column width in cm 
     'colours': {'blue': (0, 0.6, 1., 0.7), 
                 'orange': (1, 0.5, 0., 0.7)}
     }

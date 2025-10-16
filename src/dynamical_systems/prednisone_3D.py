@@ -30,9 +30,9 @@ class Prednisone3D(DynamicalSystem):
 
     def _RHS(self, t, state, parameters):
         # 3D version of prednisone model with k_Pex = k_Lex = k_ex
-        k_ex, k_PL, k_LP = parameters                            # unpack parameters
-        A = np.array([[ -(k_ex + k_PL),           k_LP],
-                      [           k_PL, -(k_ex + k_LP)]])
+        k_ex, k_PL, k_LP = parameters                                                         # unpack parameters
+        A = np.array([[ -(k_ex + k_PL),           k_LP],                                      # equation for prednisone P
+                      [           k_PL, -(k_ex + k_LP)]])                                     # equation for prednisolone L
             
         dx = np.dot(A, state) + self.k_abs * self._input_func(t)[:, 0]                        # calculate the RHS of the ODE
         return dx

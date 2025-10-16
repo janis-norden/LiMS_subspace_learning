@@ -26,7 +26,7 @@ def plot_data_generation_pipeline(label_fontsize=14, title_fontsize=16, legend_f
 
     # Create the plot
     column_width = general_styles['column_width']
-    fig = plt.figure(figsize=(2 * column_width, (2 * column_width) / 4))
+    fig = plt.figure(figsize=(column_width, column_width / 2))
 
     # 1) Spirals in parameter space
     labels = data_box_full.get_labels()
@@ -36,7 +36,7 @@ def plot_data_generation_pipeline(label_fontsize=14, title_fontsize=16, legend_f
     params_C0 = parameters[idx_C0, :]
     params_C1 = parameters[idx_C1, :]
 
-    ax1 = fig.add_subplot(1, 4, 1)
+    ax1 = fig.add_subplot(2, 2, 1)
     ax1.scatter(params_C0[:, 0], -params_C0[:, 1] + params_C0[:, 2],
                 c=pred_styles['class_colours'][0], marker=pred_styles['class_markers'][0],
                 s=scatter_area, label=pred_styles['class_labels'][0])
@@ -49,12 +49,12 @@ def plot_data_generation_pipeline(label_fontsize=14, title_fontsize=16, legend_f
     ax1.set_ylabel('$k_{LP} - k_{PL}$', fontsize=label_fontsize)
     ax1.set_title('a) Ground truth parameters', fontsize=title_fontsize)
     ax1.set_xticks([0, 0.1, 0.2])
-    ax1.set_yticks([-0.1, 0., 0.1])
+    ax1.set_yticks([-0.12, 0., 0.12])
     ax1.tick_params(axis='both', which='major', labelsize=tick_fontsize)
     ax1.legend(fontsize=legend_fontsize)
 
     # 2) Time series data
-    ax2 = fig.add_subplot(1, 4, 2)
+    ax2 = fig.add_subplot(2, 2, 2)
     timeseries = data_box_full.get_timeseries()
     for i in range(len(idx_C0)):
         label = pred_styles['class_labels'][0] if i == 0 else None
@@ -77,7 +77,7 @@ def plot_data_generation_pipeline(label_fontsize=14, title_fontsize=16, legend_f
     # 3) Samples
     downsample_fact = 50
     class_samples = data_box_full._merge_samples_by_class()
-    ax3 = fig.add_subplot(1, 4, 3)
+    ax3 = fig.add_subplot(2, 2, 3)
     ax3.scatter(class_samples[0][0::downsample_fact, 1], class_samples[0][0::downsample_fact, 2],
                 c=pred_styles['class_colours'][0], marker=pred_styles['class_markers'][0],
                 s=scatter_area, label=pred_styles['class_labels'][0])
@@ -95,7 +95,7 @@ def plot_data_generation_pipeline(label_fontsize=14, title_fontsize=16, legend_f
     ax3.legend(fontsize=legend_fontsize)
 
     # 4) Density estimates
-    ax4 = fig.add_subplot(1, 4, 4)
+    ax4 = fig.add_subplot(2, 2, 4)
     data_box_projected = data_box_full.project_density_estimates(np.array([[0,  0], [1,  0], [0,  1]]))
     density_estimates = data_box_projected.get_density_estimates()
     num_examples = len(labels)
@@ -191,7 +191,7 @@ def plot_accuracy_time_exp1_restricted_unrestricted(
     # Plot
     # create grouped boxplot
     column_width = general_styles['column_width']
-    fig, ax1 = plt.subplots(figsize=(2 * column_width, (2 * column_width) / 4))
+    fig, ax1 = plt.subplots(figsize=(column_width, column_width / 3))
     
     # Boxplot for accuracy
     box_acc = sns.boxplot(
@@ -237,7 +237,7 @@ def plot_accuracy_time_exp1_restricted_unrestricted(
 
     # Adjust legend entries
     handles1, previous_labels = ax1.get_legend_handles_labels()
-    ax1.legend(loc=(0.776, 0.45), handles=handles1, labels=['a) acc. - spherical $K_{max}=5$', 'b) acc. - spherical $K_{max}=20$', 'c) acc. - full $K_{max}=5$', 'd) acc. - full $K_{max}=20$'], fontsize=legend_fontsize)
+    ax1.legend(loc=(0.776, 0.35), handles=handles1, labels=['a) acc. - spherical $K_{max}=5$', 'b) acc. - spherical $K_{max}=20$', 'c) acc. - full $K_{max}=5$', 'd) acc. - full $K_{max}=20$'], fontsize=legend_fontsize)
 
     handles2, previous_labels = ax2.get_legend_handles_labels()
     ax2.legend(loc='lower right', handles=handles2, labels=['e) time - spherical $K_{max}=5$', 'f) time - spherical $K_{max}=20$', 'g) time - full $K_{max}=5$', 'h) time - full $K_{max}=20$'], fontsize=legend_fontsize)
@@ -439,7 +439,7 @@ def plot_accuracy_time_exp2_opt_types(
     # Plot
     # create grouped boxplot
     column_width = general_styles['column_width']
-    fig, ax1 = plt.subplots(figsize=(2 * column_width, (2 * column_width) / 4))
+    fig, ax1 = plt.subplots(figsize=(column_width, column_width / 3))
     
     # Boxplot for accuracy
     box_acc = sns.boxplot(
@@ -485,7 +485,7 @@ def plot_accuracy_time_exp2_opt_types(
 
     # Adjust legend entries
     handles1, previous_labels = ax1.get_legend_handles_labels()
-    ax1.legend(loc='right', handles=handles1, labels=['a) acc. - batch', 'b) acc. - iterative'], fontsize=legend_fontsize)
+    ax1.legend(loc=(0.838, 0.2), handles=handles1, labels=['a) acc. - batch', 'b) acc. - iterative'], fontsize=legend_fontsize)
 
     handles2, previous_labels = ax2.get_legend_handles_labels()
     ax2.legend(loc='lower right', handles=handles2, labels=['c) time - batch', 'd) time - iterative'], fontsize=legend_fontsize)
@@ -664,7 +664,7 @@ def boxplot_accuracy_loglikelihood_exp4b(
 
     # Plot
     column_width = general_styles['column_width']
-    fig, ax1 = plt.subplots(figsize=(2 * column_width, (2 * column_width) / 4))
+    fig, ax1 = plt.subplots(figsize=(column_width, column_width / 3))
 
     ax1 = sns.boxplot(
         x = df_long['dimension'], 
@@ -935,39 +935,39 @@ def plot_projected_densities_4b_relevance_profile(
 
     # create figure
     column_width = general_styles['column_width']
-    fig, axs = plt.subplots(1, 4, figsize=(2 * column_width, (2 * column_width) / 4))
+    fig, axs = plt.subplots(2, 2, figsize=(column_width, column_width / 2))
 
     # --- Relevance matrix d'=1 ---
 
     sns.barplot(
         angles_list[0],
-        ax=axs[0],
+        ax=axs[0, 0],
         color='tab:grey'
         )
     
-    axs[0].set_title('a) avg. 1D relevance profile', fontsize=title_fontsize)
-    axs[0].set_xticks(ticks = [0, 1, 2, 3], labels = [r'$m_{1}$', r'$m_{2}$', r'$\chi_{1}$', r'$\chi_{2}$'])
-    axs[0].set_ylabel(r'$\pi / 2 - \beta$')
-    axs[0].set_yticks(ticks = [0, np.pi / 4, np.pi / 2], labels = ['0', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$'])
-    axs[0].xaxis.label.set_size(axis_label_fontsize)
-    axs[0].yaxis.label.set_size(axis_label_fontsize)
-    axs[0].tick_params(axis='both', which='major', labelsize=tick_fontsize)
+    axs[0, 0].set_title('a) avg. 1D relevance profile', fontsize=title_fontsize)
+    axs[0, 0].set_xticks(ticks = [0, 1, 2, 3], labels = [r'$m_{1}$', r'$m_{2}$', r'$\chi_{1}$', r'$\chi_{2}$'])
+    axs[0, 0].set_ylabel(r'$\pi / 2 - \beta$')
+    axs[0, 0].set_yticks(ticks = [0, np.pi / 4, np.pi / 2], labels = ['0', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$'])
+    axs[0, 0].xaxis.label.set_size(axis_label_fontsize)
+    axs[0, 0].yaxis.label.set_size(axis_label_fontsize)
+    axs[0, 0].tick_params(axis='both', which='major', labelsize=tick_fontsize)
 
     # --- Relevance matrix d'=2 ---
 
     sns.barplot(
         angles_list[1],
-        ax=axs[1],
+        ax=axs[0, 1],
         color='tab:grey'
         )
     
-    axs[1].set_title('b) avg. 2D relevance profile', fontsize=title_fontsize)
-    axs[1].set_xticks(ticks = [0, 1, 2, 3], labels = [r'$m_{1}$', r'$m_{2}$', r'$\chi_{1}$', r'$\chi_{2}$'])
-    axs[1].set_ylabel(r'$\pi / 2 - \beta$')
-    axs[1].set_yticks(ticks = [0, np.pi / 4, np.pi / 2], labels = ['0', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$'])
-    axs[1].xaxis.label.set_size(axis_label_fontsize)
-    axs[1].yaxis.label.set_size(axis_label_fontsize)
-    axs[1].tick_params(axis='both', which='major', labelsize=tick_fontsize)
+    axs[0, 1].set_title('b) avg. 2D relevance profile', fontsize=title_fontsize)
+    axs[0, 1].set_xticks(ticks = [0, 1, 2, 3], labels = [r'$m_{1}$', r'$m_{2}$', r'$\chi_{1}$', r'$\chi_{2}$'])
+    axs[0, 1].set_ylabel(r'$\pi / 2 - \beta$')
+    axs[0, 1].set_yticks(ticks = [0, np.pi / 4, np.pi / 2], labels = ['0', r'$\frac{\pi}{4}$', r'$\frac{\pi}{2}$'])
+    axs[0, 1].xaxis.label.set_size(axis_label_fontsize)
+    axs[0, 1].yaxis.label.set_size(axis_label_fontsize)
+    axs[0, 1].tick_params(axis='both', which='major', labelsize=tick_fontsize)
 
 
     # --- Projections d'=1 ---
@@ -1012,20 +1012,20 @@ def plot_projected_densities_4b_relevance_profile(
         f /= len(ids_c)
 
         # plot Gaussian mixture in the class colour
-        axs[2].plot(plot_opts['x_d1'], f, color=class_colours[c], label=class_labels[c], alpha=plot_opts['alpha'], linewidth=linewidth)
+        axs[1, 0].plot(plot_opts['x_d1'], f, color=class_colours[c], label=class_labels[c], alpha=plot_opts['alpha'], linewidth=linewidth)
         
-    axs[2].set(
+    axs[1, 0].set(
         xlabel = r'$\tilde{v}_{1} \cdot [m_{1}, m_{2}, \chi_{1}, \chi_{2}]$',
         ylabel = 'density'
     )
-    axs[2].set_title('c) 1D projection of mixtures', fontsize=title_fontsize)
-    axs[2].xaxis.label.set_size(axis_label_fontsize)
-    axs[2].yaxis.label.set_size(axis_label_fontsize)
-    axs[2].tick_params(axis='both', which='major', labelsize=tick_fontsize)
+    axs[1, 0].set_title('c) 1D projection of mixtures', fontsize=title_fontsize)
+    axs[1, 0].xaxis.label.set_size(axis_label_fontsize)
+    axs[1, 0].yaxis.label.set_size(axis_label_fontsize)
+    axs[1, 0].tick_params(axis='both', which='major', labelsize=tick_fontsize)
 
     # Adjust legend entries
-    handles1, previous_labels = axs[2].get_legend_handles_labels()
-    axs[2].legend(loc='upper right', handles=handles1, labels=['BNS/NSBH', 'Small BBH', 'Large BBH'], fontsize=legend_fontsize)
+    handles1, previous_labels = axs[1, 0].get_legend_handles_labels()
+    axs[1, 0].legend(loc='upper right', handles=handles1, labels=['BNS/NSBH', 'Small BBH', 'Large BBH'], fontsize=legend_fontsize)
 
 
     # --- Projections d'=2 ---
@@ -1078,24 +1078,24 @@ def plot_projected_densities_4b_relevance_profile(
         levels = np.linspace(0.01 * vmax, vmax, num=10)
 
         # plot Gaussian mixture in the class colour
-        axs[3].contour(X, Y, Z, levels=levels, colors=class_colours[c], alpha = plot_opts['alpha'], linewidths=linewidth)
+        axs[1, 1].contour(X, Y, Z, levels=levels, colors=class_colours[c], alpha = plot_opts['alpha'], linewidths=linewidth)
 
     # add invisible plots for labels
-    axs[3].plot(-plot_opts['x_d1'], -plot_opts['x_d1'], color=class_colours[0], alpha = plot_opts['alpha'], label='BNS/NSBH', linewidth=linewidth)
-    axs[3].plot(-plot_opts['x_d1'], -plot_opts['x_d1'], color=class_colours[1], alpha = plot_opts['alpha'], label='Small BBH', linewidth=linewidth)
-    axs[3].plot(-plot_opts['x_d1'], -plot_opts['x_d1'], color=class_colours[2], alpha = plot_opts['alpha'], label='Large BBH', linewidth=linewidth) 
+    axs[1, 1].plot(-plot_opts['x_d1'], -plot_opts['x_d1'], color=class_colours[0], alpha = plot_opts['alpha'], label='BNS/NSBH', linewidth=linewidth)
+    axs[1, 1].plot(-plot_opts['x_d1'], -plot_opts['x_d1'], color=class_colours[1], alpha = plot_opts['alpha'], label='Small BBH', linewidth=linewidth)
+    axs[1, 1].plot(-plot_opts['x_d1'], -plot_opts['x_d1'], color=class_colours[2], alpha = plot_opts['alpha'], label='Large BBH', linewidth=linewidth) 
 
-    axs[3].set(
+    axs[1, 1].set(
         xlabel = r'$\tilde{w}_{1} \cdot [m_{1}, m_{2}, \chi_{1}, \chi_{2}]$',
         ylabel = r'$\tilde{w}_{2} \cdot [m_{1}, m_{2}, \chi_{1}, \chi_{2}]$'
     )
-    axs[3].set_xlim([np.min(plot_opts['x_d2']), np.max(plot_opts['x_d2'])])
-    axs[3].set_ylim([np.min(plot_opts['y_d2']), np.max(plot_opts['y_d2'])])
-    axs[3].set_title('d) 2D projection of mixtures', fontsize=title_fontsize)
-    axs[3].xaxis.label.set_size(axis_label_fontsize)
-    axs[3].yaxis.label.set_size(axis_label_fontsize)
-    axs[3].tick_params(axis='both', which='major', labelsize=tick_fontsize)
-    axs[3].legend(loc='upper left', fontsize=legend_fontsize)
+    axs[1, 1].set_xlim([np.min(plot_opts['x_d2']), np.max(plot_opts['x_d2'])])
+    axs[1, 1].set_ylim([np.min(plot_opts['y_d2']), np.max(plot_opts['y_d2'])])
+    axs[1, 1].set_title('d) 2D projection of mixtures', fontsize=title_fontsize)
+    axs[1, 1].xaxis.label.set_size(axis_label_fontsize)
+    axs[1, 1].yaxis.label.set_size(axis_label_fontsize)
+    axs[1, 1].tick_params(axis='both', which='major', labelsize=tick_fontsize)
+    axs[1, 1].legend(loc='upper left', fontsize=legend_fontsize)
 
     fig.tight_layout()
 
@@ -1200,7 +1200,7 @@ def plot_optimization_history_averages(
     # load general styles
     general_styles = load_general_styles()
     column_width = general_styles['column_width']
-    fig, axs = plt.subplots(2, 2, figsize=(2 * column_width, (2 * column_width) / 3))
+    fig, axs = plt.subplots(2, 2, figsize=(column_width, column_width / 3))
 
     # loglikelihood
     loglikelihood_values = -loglikelihood_values
@@ -1225,19 +1225,19 @@ def plot_optimization_history_averages(
 
     # plots with adjustable line width
     axs[0, 0].plot(loglikelihood_mean, 'k', label='mean', linewidth=line_width)
-    axs[0, 0].fill_between(np.arange(max_num_iterations), loglikelihood_mean - num_std * loglikelihood_std, loglikelihood_mean + num_std * loglikelihood_std, color='k', alpha=0.2, label=str(num_std) + '-std.')
+    axs[0, 0].fill_between(np.arange(max_num_iterations), loglikelihood_mean - num_std * loglikelihood_std, loglikelihood_mean + num_std * loglikelihood_std, color='lightgrey', alpha=0.5, label=str(num_std) + '-std.')
     axs[0, 0].legend(loc = 'lower right', fontsize=legend_fontsize)
 
     axs[0, 1].plot(normals_mean, 'k', label='mean', linewidth=line_width)
-    axs[0, 1].fill_between(np.arange(max_num_iterations), normals_mean - num_std * normals_std, normals_mean + num_std * normals_std, color='k', alpha=0.2, label=str(num_std) + '-std.')
+    axs[0, 1].fill_between(np.arange(max_num_iterations), normals_mean - num_std * normals_std, normals_mean + num_std * normals_std, color='lightgrey', alpha=0.5, label=str(num_std) + '-std.')
     axs[0, 1].legend(loc = 'upper right',fontsize=legend_fontsize)
 
     axs[1, 0].plot(train_accuracies_mean, 'k', label='mean', linewidth=line_width)
-    axs[1, 0].fill_between(np.arange(max_num_iterations), train_accuracies_mean - num_std * train_accuracies_std, train_accuracies_mean + num_std * train_accuracies_std, color='k', alpha=0.2, label=str(num_std) + '-std.')
+    axs[1, 0].fill_between(np.arange(max_num_iterations), train_accuracies_mean - num_std * train_accuracies_std, train_accuracies_mean + num_std * train_accuracies_std, color='lightgrey', alpha=0.5, label=str(num_std) + '-std.')
     axs[1, 0].legend(loc = 'lower right',fontsize=legend_fontsize)
 
     axs[1, 1].plot(test_accuracies_mean, 'k', label='mean', linewidth=line_width)
-    axs[1, 1].fill_between(np.arange(max_num_iterations), test_accuracies_mean - num_std * test_accuracies_std, test_accuracies_mean + num_std * test_accuracies_std, color='k', alpha=0.2, label=str(num_std) + '-std.')
+    axs[1, 1].fill_between(np.arange(max_num_iterations), test_accuracies_mean - num_std * test_accuracies_std, test_accuracies_mean + num_std * test_accuracies_std, color='lightgrey', alpha=0.5, label=str(num_std) + '-std.')
     axs[1, 1].legend(loc = 'lower right',fontsize=legend_fontsize)
 
     # ddjust label sizes
@@ -1355,7 +1355,7 @@ def plot_GMLVQ_SSL_comparisson(
     # load plot styles and extract
     general_styles = load_general_styles()
     column_width = general_styles['column_width']
-    fig, axis = plt.subplots(figsize=(2 * column_width, (2 * column_width) / 4))
+    fig, axis = plt.subplots(figsize=(column_width, column_width / 3))
     ax = sns.boxplot(
                 data = df,
                 x = 'method',
